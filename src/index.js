@@ -18,18 +18,13 @@ refs.input.addEventListener(
 
 function handleInputSearchBoxValue(event) {
   const value = event.target.value.trim();
+  cleanMarkup();
 
-  if (value === '') {
-    cleanMarkup();
+  if (!value) {
     return;
   }
 
-  fetchCountries(value)
-    .then(getMarkupByQueryCondition)
-    .catch(err => {
-      cleanMarkup();
-      makeErrorMessage(err);
-    });
+  fetchCountries(value).then(getMarkupByQueryCondition).catch(makeErrorMessage);
 }
 
 function createMarkupCountry({
@@ -75,20 +70,17 @@ function appendMarkupCountriesList(countries) {
 
 function getMarkupByQueryCondition(countries) {
   if (countries.length > 10) {
-    cleanMarkup();
     makeinfoMessage(
       'Too many matches found. Please enter a more specific name.'
     );
     return;
   }
   if (countries.length >= 2 && countries.length <= 10) {
-    cleanMarkup();
     appendMarkupCountriesList(countries);
 
     return;
   }
 
-  cleanMarkup();
   appendMarkupCountry(countries);
 }
 
